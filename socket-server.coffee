@@ -11,6 +11,14 @@ plantInterval 100, ->
   rotaion = rotaion % 360
 
 io.sockets.on "connection", (socket) ->
-  plantInterval 100, ->
-    socket.emit "rotation-update",
+  socket.on 'rotation.subscribe', ->
+    plantInterval 100, ->
+      socket.emit "rotation.update",
+        rotation: rotation
+
+  socket.on 'rotation.ask', ->
+    socket.emit "rotation.update",
       rotation: rotation
+
+  socket.on 'rotation.update', (data) ->
+    rotation = data.rotation
