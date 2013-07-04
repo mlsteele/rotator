@@ -7,6 +7,7 @@ html(lang="en")
     link(href="/static/rotator/style/rotator.css", rel="stylesheet", media="screen")
     script(src="/static/js/jquery-1.10.2.min.js")
     script(src="/static/js/jQueryRotateCompressed.2.2.js")
+    script(src="http://localhost:8044/socket.io/socket.io.js")
     script(type='text/javascript')
       console.log('welcome javascript!')
       var rotation = 0
@@ -14,6 +15,17 @@ html(lang="en")
         rotation += 0.1
         $('.rotator-image').rotate(rotation)
       }, 1)
+
+    script(type='text/javascript')
+      var socket = io.connect('http://localhost:8044');
+
+      socket.emit('ping')
+
+      socket.on('pong', function (data) {
+        console.log('received pong')
+        socket.emit('ping')
+      });
+
 body
     .container.rotator-container
       h1 Rotator
