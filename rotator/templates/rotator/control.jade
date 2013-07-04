@@ -1,0 +1,41 @@
+doctype 5
+html(lang="en")
+  head
+    title= pageTitle
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(href="/static/bootstrap/css/bootstrap.min.css", rel="stylesheet", media="screen")
+    link(href="/static/jquery-ui-1.10.3.custom/css/flick/jquery-ui-1.10.3.custom.min.css", rel="stylesheet", media="screen")
+    link(href="/static/rotator/style/control.css", rel="stylesheet", media="screen")
+    script(src="/static/js/jquery-1.10.2.min.js")
+    script(src="/static/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js")
+    script(src="/static/js/jQueryRotateCompressed.2.2.js")
+    script(src="http://localhost:8044/socket.io/socket.io.js")
+    script(type='text/javascript')
+      $(function(){
+        $( ".control-slider" ).slider({
+          range: 'max',
+          min: -10,
+          max: 10,
+          value: 0,
+          step: 0.1,
+          slide: function(event, ui) {
+            console.log(ui.value)
+          }
+        })
+      })
+
+      var socket = io.connect('http://localhost:8044');
+
+      //- $( ".selector" ).slider( "option", "min", 10 )
+
+      //- socket.on('rotation-update', function (data) {
+      //-   //- console.log(data)
+      //-   $('.rotator-image').rotate(data.rotation)
+      //- });
+
+body
+    .container.rotator-container
+      h1 Control
+      p Just don't... touch anything.
+      h2 Speed
+      div.control-slider
