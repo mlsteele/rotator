@@ -15,7 +15,7 @@ html(lang="en")
 
       socket.on('rotation.update', function (data) {
         //- console.log(data)
-        $('.rotator-image').rotate(data.rotation)
+        $('.rotator-image').rotate(data.rotation.theta)
       });
 
 body

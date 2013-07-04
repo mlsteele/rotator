@@ -4,11 +4,13 @@ plantInterval = (ms, cb) -> setInterval cb, ms
 
 io = require("socket.io").listen(8044)
 
-rotation = 0
+rotation =
+  theta: 0
+  rvel: 0.5
 
 plantInterval 100, ->
-  rotation += 0.5
-  rotaion = rotaion % 360
+  rotation.theta += rotation.rvel
+  rotation.theta = rotation.theta % 360
 
 io.sockets.on "connection", (socket) ->
   socket.on 'rotation.subscribe', ->
@@ -21,4 +23,4 @@ io.sockets.on "connection", (socket) ->
       rotation: rotation
 
   socket.on 'rotation.update', (data) ->
-    rotation = data.rotation
+    rotation.rvel = data.rvel
