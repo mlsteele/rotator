@@ -1,8 +1,9 @@
 .rotator-image {
     width: 200px;
     height: 200px;
-    -webkit-transform-origin: 50% 50% 0;
-    -webkit-transform: rotateZ(0deg);
+    /*-webkit-transform-origin: 50% 50% 0;*/
+    /*-webkit-transform: rotateZ(0deg);*/
+    /*-sand-transform: rotate(40deg);*/
 
     /*border: 1px solid;*/
     background: url('/static/rotator/images/onionV10.png') no-repeat;
