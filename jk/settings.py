@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 ) + (
     'rotator',
+    'common',
 )
 
 # A sample logging configuration. The only tangible logging
