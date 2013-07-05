@@ -1,4 +1,4 @@
-# Django settings for jk project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -23,7 +23,6 @@ DATABASES = {
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-# ALLOWED_HOSTS = ['jesskenney.com']
 ALLOWED_HOSTS = []
 
 # Local time zone for this installation. Choices can be found here:
@@ -84,7 +83,22 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'va&65_@ezgs#01l4swg&)l1p(fe#zko!v8!za^x5p_slt!nv&m'
+def find_or_create_secret_key():
+    secret_key_filepath = os.path.join(os.path.dirname(__file__), 'secret_key.py')
+
+    if os.path.isfile(secret_key_filepath):
+        from secret_key import SECRET_KEY
+        return SECRET_KEY
+    else:
+        from django.utils.crypto import get_random_string
+        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+        new_key = get_random_string(50, chars)
+        with file(secret_key_filepath, 'w') as f:
+            f.write("# Django secret key\n# Do NOT check this into version control.\n\nSECRET_KEY = '%s'\n" % new_key)
+        from secret_key import SECRET_KEY
+        return SECRET_KEY
+
+SECRET_KEY = find_or_create_secret_key()
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
