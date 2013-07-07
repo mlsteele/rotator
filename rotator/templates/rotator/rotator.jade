@@ -1,24 +1,27 @@
 doctype 5
 html(lang="en")
   head
-    title= pageTitle
+    title= page_title
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(href="/static/vendor/bootstrap/css/bootstrap.min.css", rel="stylesheet", media="screen")
     link(href="/static/rotator/style/rotator.css", rel="stylesheet", media="screen")
     script(src="/static/vendor/jquery-1.10.2.min.js")
     script(src="/static/vendor/jQueryRotateCompressed.2.2.js")
-    script(src="http://localhost:8044/socket.io/socket.io.js")
+    script(src=websocket_host + "/socket.io/socket.io.js")
     script(type='text/javascript')
-      var socket = io.connect('http://localhost:8044');
+      $(function(){
+        var socket_server = $('body').data('websocket-server')
+        var socket = io.connect(socket_server)
 
-      socket.emit('rotation.subscribe')
+        socket.emit('rotation.subscribe')
 
-      socket.on('rotation.update', function (data) {
-        //- console.log(data)
-        $('.rotator-image').rotate(data.rotation.theta)
-      });
+        socket.on('rotation.update', function (data) {
+          //- console.log(data)
+          $('.rotator-image').rotate(data.rotation.theta)
+        });
+      })
 
-body
+body(data-websocket-server=websocket_host)
     .container.rotator-container
       h1 Rotator
       p Spin, spin, spin, spin...

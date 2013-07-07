@@ -9,11 +9,18 @@ html(lang="en")
     script(src="/static/vendor/jquery-1.10.2.min.js")
     script(src="/static/vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js")
     script(src="/static/vendor/jQueryRotateCompressed.2.2.js")
-    script(src="http://localhost:8044/socket.io/socket.io.js")
+    script(src=websocket_host + "/socket.io/socket.io.js")
     script(type='text/javascript')
-      var socket = io.connect('http://localhost:8044');
-
       $(function(){
+        var socket_server = $('body').data('websocket-server')
+        var socket = io.connect(socket_server)
+
+        socket.emit('rotation.ask')
+
+        socket.on('rotation.update', function(data) {
+          $('.control-slider').slider('option', 'value', data.rotation.rvel)
+        })
+
         $( ".control-slider" ).slider({
           range: 'max',
           min: -4,
@@ -25,15 +32,10 @@ html(lang="en")
             socket.emit('rotation.update', {'rvel': ui.value})
           }
         })
+
       })
 
-      socket.emit('rotation.ask')
-
-      socket.on('rotation.update', function(data) {
-        $('.control-slider').slider('option', 'value', data.rotation.rvel)
-      })
-
-body
+body(data-websocket-server=websocket_host)
     .container.rotator-container
       h1 Control
       p Just don't... touch anything.
