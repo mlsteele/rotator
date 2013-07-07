@@ -82,8 +82,11 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
 def find_or_create_secret_key():
+    """
+    Look for secret_key.py and return the SECRET_KEY entry in it if the file exists.
+    Otherwise, generate a new secret key, save it in secret_key.py, and return the key.
+    """
     secret_key_filepath = os.path.join(os.path.dirname(__file__), 'secret_key.py')
 
     if os.path.isfile(secret_key_filepath):
@@ -98,6 +101,7 @@ def find_or_create_secret_key():
         from secret_key import SECRET_KEY
         return SECRET_KEY
 
+# Make this unique, and don't share it with anybody.
 SECRET_KEY = find_or_create_secret_key()
 
 # List of callables that know how to import templates from various sources.
